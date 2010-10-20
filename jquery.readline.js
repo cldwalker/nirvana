@@ -43,13 +43,19 @@
     response(get_search_history(request.term));
   };
 
+  // Options:
+  // * startCompletion: function to start a tab completion, given the element's current value
+  // * autocompleteCss: css for jquery-ui, defaults to jquery.ui.autocomplete.css
+  // * readlineCss: css for readline, defaults to jquery.readline.css
   $.fn.readline = function(options) {
     options = $.extend({
-      prompt_id: this.selector + '_prompt',
-      startCompletion: function(val) {},
+      autocompleteCss: 'jquery.ui.autocomplete.css',
+      readlineCss: 'jquery.readline.css'
     }, options);
     input = $(this);
-    startCompletion = options.startCompletion;
+    var prompt_id = this.selector + '_prompt';
+    $('head:first').append("<link href='"+options.autocompleteCss+"' rel='stylesheet' type='text/css'/>").
+      append("<link href='"+options.readlineCss+"' rel='stylesheet' type='text/css'/>");
 
     input.
       bind('keydown', 'ctrl+p', previous_line).
@@ -59,12 +65,17 @@
       bind('keydown', 'ctrl+r', search_history).
       bind('keydown', 'ctrl+g', exit_search_history).
       bind('keydown', 'ctrl+u', clear_line).
-      bind('keydown', 'tab', tab_complete).
-      autocomplete({ source: autocomplete_history_source, disabled: true }).
-      before('<span id="'+options.prompt_id.replace('#', '')+'"></span>');
+      autocomplete({
+        source: autocomplete_history_source,
+        disabled: true,
+        close: function(event, ui) { exit_search_history(); return true; }
+      }).
+      before('<span id="'+prompt_id.replace('#', '')+'"></span>');
 
-    input_prompt = $(options.prompt_id);
-
+    input_prompt = $(prompt_id);
+    if (startCompletion = options.startCompletion) {
+      input.bind('keydown', 'tab', tab_complete);
+    }
     return this;
   };
 

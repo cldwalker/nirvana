@@ -1,0 +1,11 @@
+/* for jquery-ui-autocomplete */
+.ui-widget-content {
+  border: 0px;
+}
+.ui-widget {
+  font-family: monospace;
+  font-size: 100%;
+}
+.ui-menu .ui-menu-item a {
+  padding: 0em;
+}

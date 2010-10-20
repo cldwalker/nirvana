@@ -1,26 +1,6 @@
-/* line 1, brirb.sass */
-body {
-  font-family: monospace;
-}
-/* line 3, brirb.sass */
-body input#input {
-  font-size: 100%;
-  font-family: monospace;
-  border: none;
-  padding: 0;
-  margin: 0;
-  width: 80%;
-}
-/* line 10, brirb.sass */
-body input#input:focus {
-  border: none;
-  outline: none;
-}
-/* line 13, brirb.sass */
 body .exception {
   color: red;
 }
-/* line 15, brirb.sass */
 body .warning {
   color: #ffcc00;
 }
