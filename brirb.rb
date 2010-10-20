@@ -6,8 +6,9 @@ require 'yajl'
 module Brirb
   extend self
   attr_reader :has_autocompletion
-  attr_accessor :line, :brirb_binding
+  attr_accessor :line, :brirb_binding, :result_prompt
   @line = 1
+  @result_prompt = '=> '
 
   def capture_stdout
     out = StringIO.new
@@ -42,10 +43,9 @@ module Brirb
   end
 
   def setup_repl(ws)
-    ws.send RUBY_DESCRIPTION rescue RUBY_VERSION
     if File.exists?(File.expand_path('~/.irbrc'))
       stdout, stderr = capture_all { load('~/.irbrc') }
-      ws.send format_output(stdout + stderr)
+      ws.send(format_output(stdout + stderr)) unless (stdout + stderr).empty?
     end
 
     begin
@@ -75,7 +75,7 @@ module Brirb
 
     eval("_ = #{result.inspect}", brirb_binding) rescue nil
     self.line += 1
-    response = stdout << "=> #{result.inspect}"
+    response = stdout << result_prompt << result.inspect
     output = format_output response
     output = "<div class='warning'>#{stderr}</div>" + output unless stderr.to_s.empty?
     output

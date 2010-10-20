@@ -17,7 +17,8 @@
             readlineCss: 'css/jquery.readline.css',
             startCompletion: $.wsComplete
           }).repl({
-            startMessage: false,
+            resultPrompt: '',
+            startMessage: function() { return '$ bs' },
             spinner: 'images/spinner.gif',
             loop: function(val) {
               $.readline.addHistory(val);

@@ -62,7 +62,7 @@
     },
     logResult: function(str) {
       $('#'+spinner_id).remove();
-      return $.repl.log(str);
+      return $.repl.log(resultPrompt + str);
     },
     eval: function(input) {
       try { var result = eval(input); }
@@ -76,7 +76,7 @@
       return result;
     },
     loop: function(line) {
-      var result = resultPrompt + $.repl.eval(line);
+      var result = $.repl.eval(line);
       return $.repl.logResult(result);
     }
   };
