@@ -2,6 +2,13 @@
   var readline_offset = search_offset = 0;
   var input, input_prompt, original_prompt, startCompletion;
   var readline_history = [];
+  var original_autocomplete_options = {
+    close: function(event, ui) { exit_search_history(); return true; },
+    disabled: true,
+    source: function(request, response) {
+      return response(get_search_history(request.term));
+    }
+  };
 
   var clear_line = function () { input.val(''); };
   var previous_line = function () {
@@ -23,8 +30,8 @@
   }
   var get_search_history = function(term) {
     var results = [];
-    $.each(readline_history, function(key,value) {
-      value.match(term) && results.push(value);
+    $.each(readline_history.reverse(), function(key,value) {
+      (value.indexOf(term) != -1) && results.push(value);
     });
     return results;
   };
@@ -37,10 +44,6 @@
     input.autocomplete('enable');
     startCompletion(input.val());
     return false;
-  };
-
-  var autocomplete_history_source = function(request, response) {
-    response(get_search_history(request.term));
   };
 
   // Options:
@@ -65,11 +68,7 @@
       bind('keydown', 'ctrl+r', search_history).
       bind('keydown', 'ctrl+g', exit_search_history).
       bind('keydown', 'ctrl+u', clear_line).
-      autocomplete({
-        source: autocomplete_history_source,
-        disabled: true,
-        close: function(event, ui) { exit_search_history(); return true; }
-      }).
+      autocomplete(original_autocomplete_options).
       before('<span id="'+prompt_id.replace('#', '')+'"></span>');
 
     input_prompt = $(prompt_id);
@@ -85,18 +84,16 @@
   };
   var finishCompletion = function(completions) {
     var onclose = function() {
-      input.autocomplete('option', {
-        close: function() {},
-        disabled: true,
-        source: autocomplete_history_source
-      });
+      input.autocomplete('option', original_autocomplete_options);
       $('ul.ui-autocomplete').hide();
     };
-    input.autocomplete('option', {
-      close: onclose,
-      source: completions
-    });
-    input.autocomplete('search');
+    if (completions.length == 1) {
+      input.val(completions[0]);
+      onclose();
+    } else {
+      input.autocomplete('option', { close: onclose, source: completions.sort() }).
+        autocomplete('search');
+    }
   };
 
   $.readline = {
