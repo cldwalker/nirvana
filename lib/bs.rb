@@ -1,13 +1,11 @@
 require 'stringio'
 require 'escape_utils'
 require 'yajl'
+require 'bs/shell'
 
 module Bs
   extend self
-  attr_reader :has_autocompletion
-  attr_accessor :line, :eval_binding, :result_prompt
-  @line = 1
-  @result_prompt = '=> '
+  attr_accessor :shell
 
   def capture_stdout
     out = StringIO.new
@@ -42,39 +40,25 @@ module Bs
   end
 
   def setup_repl(ws)
-    if File.exists?(File.expand_path('~/.irbrc'))
-      stdout, stderr = capture_all { load('~/.irbrc') }
-      ws.send(format_output(stdout + stderr)) unless (stdout + stderr).empty?
-    end
-
-    begin
-      require 'bond'
-      Bond.start
-      @has_autocompletion = true
-    rescue LoadError
-      @has_autocompletion = false
-    end
+    stdout, stderr = capture_all { @shell = Shell.new :name=>'bs' }
+    ws.send(format_output(stdout.to_s + stderr.to_s)) unless (stdout.to_s + stderr.to_s).empty?
   end
 
   def get_completions(msg)
-    line_buffer = msg.sub(/^:AUTOCOMPLETE:\s*/, '')
-    msg = "Bond.agent.call('#{line_buffer[/\w+$/]}', '#{line_buffer}')"
-    completions = eval(msg, eval_binding, '(bs)')
+    completions = shell.completions msg.sub(/^:AUTOCOMPLETE:\s*/, '')
     ':AUTOCOMPLETE: ' + Yajl::Encoder.encode(completions)
   end
 
   def get_eval_result(msg)
     begin
       stdout, stderr, result = capture_all do
-        eval(msg, eval_binding, '(bs)', line)
+        shell.eval_line msg
       end
     rescue Exception => e
       return format_error(e)
     end
 
-    eval("_ = #{result.inspect}", eval_binding) rescue nil
-    self.line += 1
-    response = stdout << result_prompt << result.inspect
+    response = stdout << shell.after_eval(result)
     output = format_output response
     output = "<div class='bs_warning'>#{stderr}</div>" + output unless stderr.to_s.empty?
     output
@@ -86,7 +70,7 @@ module Bs
   end
 
   def eval_line(msg)
-    has_autocompletion && msg[/^:AUTOCOMPLETE:/] ?
+    shell.has_autocompletion && msg[/^:AUTOCOMPLETE:/] ?
       get_completions(msg) : get_eval_result(msg)
   rescue Exception => e
     format_error(e, "Internal bs error: ")
@@ -98,4 +82,3 @@ module Bs
     RUBY_PLATFORM[/darwin/i]  ? system('open', html_file) : puts(html_file)
   end
 end
-Bs.eval_binding = binding
