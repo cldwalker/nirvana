@@ -77,13 +77,13 @@ module Bs
     self.line += 1
     response = stdout << result_prompt << result.inspect
     output = format_output response
-    output = "<div class='warning'>#{stderr}</div>" + output unless stderr.to_s.empty?
+    output = "<div class='bs_warning'>#{stderr}</div>" + output unless stderr.to_s.empty?
     output
   end
 
   def format_error(error, message='')
     message << error.to_s << "\n" << error.backtrace.map { |l| "\t#{l}" }.join("\n")
-    "<span class='exception'>#{format_output(message)}</span>"
+    "<span class='bs_exception'>#{format_output(message)}</span>"
   end
 
   def eval_line(msg)

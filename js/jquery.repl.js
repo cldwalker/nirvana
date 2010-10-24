@@ -1,5 +1,5 @@
 (function($) {
-  var screen, input, spinner_id, resultPrompt;
+  var screen, input, spinner_id, resultPrompt, prompt_id;
   var spinner = "<div id='%s' style='background: url(%i) no-repeat 0 center; "+
     "vertical-align: middle;'> &nbsp;</div>";
 
@@ -29,7 +29,7 @@
     spinner = spinner.replace('%s', spinner_id);
     spinner = spinner.replace('%i', options.spinner);
 
-    var prompt_id = input_id + '_prompt';
+    prompt_id = input_id + '_prompt';
     if (!$('#'+prompt_id).length) {
       input.before('<span id="'+prompt_id+'"></span>');
     }
@@ -63,6 +63,10 @@
     logResult: function(str) {
       $('#'+spinner_id).remove();
       return $.repl.log(resultPrompt + str);
+    },
+    disable: function() {
+      $('#'+prompt_id).hide();
+      return input.hide();
     },
     eval: function(input) {
       try { var result = eval(input); }

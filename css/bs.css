@@ -1,6 +1,6 @@
-body .exception {
+body .bs_exception {
   color: red;
 }
-body .warning {
+body .bs_warning {
   color: #ffcc00;
 }

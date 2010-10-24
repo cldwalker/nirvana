@@ -1,5 +1,5 @@
 (function($) {
-  if (!('WebSocket' in window)) { alert("This browser does NOT support websockets."); }
+  if (!('WebSocket' in window)) { alert("This browser does NOT support websockets and thus no bs for you :("); }
 
   var ws = new WebSocket("ws://127.0.0.1:8080");
   ws.onmessage = function(e) {
@@ -12,12 +12,13 @@
     }
   };
   ws.onclose = function() {
-    return $.repl.log("!!! CLOSED !!!");
+    $.repl.disable();
+    return $.repl.log("<div class='bs_exception'>bs: websocket closed</div>");
   };
   ws.onerror = function() {
-    return $.repl.log("!!! ERROR !!!");
+    return $.repl.log("<div class='bs_exception'>bs: websocket error</div>");
   };
 
   $.ws = function() { return ws };
-  $.wsComplete = function(val) { ws.send(':AUTOCOMPLETE: '+val); };
+  $.ws.bsComplete = function(val) { ws.send(':AUTOCOMPLETE: '+val); };
 })(jQuery);
