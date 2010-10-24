@@ -91,4 +91,10 @@ module Bs
   rescue Exception => e
     format_error(e, "Internal bs error: ")
   end
+
+  def start
+    system "bs-websocket &"
+    html_file = File.expand_path(File.dirname(__FILE__) + '/bs/public/index.html')
+    RUBY_PLATFORM[/darwin/i]  ? system('open', html_file) : puts(html_file)
+  end
 end

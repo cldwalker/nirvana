@@ -1,5 +1,4 @@
 #!/usr/bin/env ruby
 
-require 'bs/websocket'
-
-Bs::Websocket.run
+require 'bs'
+Bs.start
