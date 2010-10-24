@@ -1,4 +1,3 @@
-require 'em-websocket'
 require 'stringio'
 require 'escape_utils'
 require 'yajl'
@@ -91,13 +90,5 @@ module Bs
       get_completions(msg) : get_eval_result(msg)
   rescue Exception => e
     format_error(e, "Internal bs error: ")
-  end
-end
-
-EventMachine.run do
-  EventMachine::WebSocket.start(:host => '127.0.0.1', :port => 8080) do |ws|
-    Bs.eval_binding = binding
-    ws.onopen { Bs.setup_repl(ws) }
-    ws.onmessage {|msg| ws.send Bs.eval_line(msg) }
   end
 end
