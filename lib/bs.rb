@@ -98,3 +98,4 @@ module Bs
     RUBY_PLATFORM[/darwin/i]  ? system('open', html_file) : puts(html_file)
   end
 end
+Bs.eval_binding = binding

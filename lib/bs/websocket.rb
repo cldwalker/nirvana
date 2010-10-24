@@ -6,7 +6,6 @@ module Bs
     def self.run
       EventMachine.run do
         EventMachine::WebSocket.start(:host => '127.0.0.1', :port => 8080) do |ws|
-          Bs.eval_binding = binding
           ws.onopen { Bs.setup_repl(ws) }
           ws.onmessage {|msg| ws.send Bs.eval_line(msg) }
         end
