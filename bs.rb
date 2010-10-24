@@ -3,10 +3,10 @@ require 'stringio'
 require 'escape_utils'
 require 'yajl'
 
-module Brirb
+module Bs
   extend self
   attr_reader :has_autocompletion
-  attr_accessor :line, :brirb_binding, :result_prompt
+  attr_accessor :line, :eval_binding, :result_prompt
   @line = 1
   @result_prompt = '=> '
 
@@ -60,20 +60,20 @@ module Brirb
   def get_completions(msg)
     line_buffer = msg.sub(/^:AUTOCOMPLETE:\s*/, '')
     msg = "Bond.agent.call('#{line_buffer[/\w+$/]}', '#{line_buffer}')"
-    completions = eval(msg, brirb_binding, '(brirb)')
+    completions = eval(msg, eval_binding, '(bs)')
     ':AUTOCOMPLETE: ' + Yajl::Encoder.encode(completions)
   end
 
   def get_eval_result(msg)
     begin
       stdout, stderr, result = capture_all do
-        eval(msg, brirb_binding, '(brirb)', line)
+        eval(msg, eval_binding, '(bs)', line)
       end
     rescue Exception => e
       return format_error(e)
     end
 
-    eval("_ = #{result.inspect}", brirb_binding) rescue nil
+    eval("_ = #{result.inspect}", eval_binding) rescue nil
     self.line += 1
     response = stdout << result_prompt << result.inspect
     output = format_output response
@@ -90,14 +90,14 @@ module Brirb
     has_autocompletion && msg[/^:AUTOCOMPLETE:/] ?
       get_completions(msg) : get_eval_result(msg)
   rescue Exception => e
-    format_error(e, "Internal brirb error: ")
+    format_error(e, "Internal bs error: ")
   end
 end
 
 EventMachine.run do
   EventMachine::WebSocket.start(:host => '127.0.0.1', :port => 8080) do |ws|
-    Brirb.brirb_binding = binding
-    ws.onopen { Brirb.setup_repl(ws) }
-    ws.onmessage {|msg| ws.send Brirb.eval_line(msg) }
+    Bs.eval_binding = binding
+    ws.onopen { Bs.setup_repl(ws) }
+    ws.onmessage {|msg| ws.send Bs.eval_line(msg) }
   end
 end
