@@ -28,10 +28,24 @@ module Bs
       eval(str, @binding, "(#{@name})", @line)
     end
 
-    def after_eval(result)
+    def print_eval_error(e)
+      warn "#{e.class}: #{e.message}"
+    end
+
+    def format_result(result)
+      @options[:result_prompt] + result.inspect
+    end
+
+    def loop_once(input)
+      begin
+        result = eval_line(input)
+      rescue Exception => e
+        return print_eval_error(e)
+      end
+
       eval("_ = #{result.inspect}", @binding) rescue nil
       @line += 1
-      @options[:result_prompt] + result.inspect
+      format_result result
     end
 
     def completions(line_buffer)
