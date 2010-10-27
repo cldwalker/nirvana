@@ -1,5 +1,5 @@
+require 'ripl'
 require 'bs/shell'
-require 'bs/web_shell'
 require 'bs/util'
 
 module Bs
@@ -7,7 +7,7 @@ module Bs
   attr_accessor :shell
 
   def start_shell
-    stdout, stderr = Util.capture_all { @shell = WebShell.new :name=>'bs' }
+    stdout, stderr = Util.capture_all { @shell = Shell.new :name=>'bs' }
     (result = stdout.to_s + stderr.to_s) ? Util.format_output(result) : result
   end
 
