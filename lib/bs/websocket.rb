@@ -6,7 +6,10 @@ module Bs
     def self.run
       EventMachine.run do
         EventMachine::WebSocket.start(:host => '127.0.0.1', :port => 8080) do |ws|
-          ws.onopen { Bs.start_shell(ws) }
+          ws.onopen {
+            result = Bs.start_shell
+            ws.send(result) unless result.to_s.empty?
+          }
           ws.onmessage {|msg| ws.send Bs.shell.loop_once(msg) }
         end
       end

@@ -6,9 +6,9 @@ module Bs
   extend self
   attr_accessor :shell
 
-  def start_shell(ws)
+  def start_shell
     stdout, stderr = Util.capture_all { @shell = WebShell.new :name=>'bs' }
-    ws.send(Util.format_output(stdout.to_s + stderr.to_s)) unless (stdout.to_s + stderr.to_s).empty?
+    (result = stdout.to_s + stderr.to_s) ? Util.format_output(result) : result
   end
 
   def start
