@@ -7,7 +7,7 @@ module Bs
   attr_accessor :shell
 
   def start_shell
-    stdout, stderr = Util.capture_all { @shell = Shell.new :name=>'bs' }
+    stdout, stderr = Util.capture_all { @shell = Shell.new :name=>'bs'; @shell.before_loop }
     (result = stdout.to_s + stderr.to_s) ? Util.format_output(result) : result
   end
 
