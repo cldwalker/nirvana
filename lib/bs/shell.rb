@@ -42,9 +42,12 @@ module Bs
     end
 
     def completions(line_buffer)
-      msg = "Bond.agent.call('#{line_buffer[/\w+$/]}', '#{line_buffer}')"
-      eval(msg, @binding, "(#{@name})") rescue []
+      input = line_buffer[/([^#{Bond::Readline::DefaultBreakCharacters}]+)$/,1]
+      arr = Bond.agent.call(input || line_buffer, line_buffer)
+      return [] if arr[0].to_s[/^Bond Error:/] #silence bond debug errors
+      return arr if input == line_buffer
+      chopped_input = line_buffer.sub(/#{Regexp.quote(input.to_s)}$/, '')
+      arr.map {|e| chopped_input + e }
     end
-
   end
 end
