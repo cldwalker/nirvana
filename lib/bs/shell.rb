@@ -4,6 +4,7 @@ require 'ripl/completion'
 module Bs
   module Shell
     def loop_once(input)
+      @history << input
       @eval_error = nil
       if input[/^:AUTOCOMPLETE:/]
         get_completions(input)
