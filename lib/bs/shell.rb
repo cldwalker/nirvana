@@ -2,8 +2,7 @@ require 'yajl'
 require 'ripl/completion'
 
 module Bs
-  class Shell < Ripl::Shell
-
+  module Shell
     def loop_once(input)
       @eval_error = nil
       if input[/^:AUTOCOMPLETE:/]
@@ -51,3 +50,5 @@ module Bs
     end
   end
 end
+
+Ripl::Shell.send :include, Bs::Shell
