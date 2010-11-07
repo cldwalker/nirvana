@@ -11,6 +11,7 @@ module Bs
             ws.send(result) unless result.to_s.empty?
           }
           ws.onmessage {|msg| ws.send Ripl.shell.loop_once(msg) }
+          ws.onclose { Ripl.shell.after_loop }
         end
       end
     rescue
