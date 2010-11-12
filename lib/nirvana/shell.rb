@@ -1,4 +1,4 @@
-require 'yajl'
+require 'json'
 require 'ripl/completion'
 
 module Nirvana
@@ -38,7 +38,7 @@ module Nirvana
 
     def get_completions(input)
       arr = completions input.sub(/^:AUTOCOMPLETE:\s*/, '')
-      ':AUTOCOMPLETE: ' + Yajl::Encoder.encode(arr)
+      ':AUTOCOMPLETE: ' + JSON.generate(arr)
     end
 
     def completions(line_buffer)

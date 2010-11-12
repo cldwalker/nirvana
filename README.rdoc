@@ -1,0 +1,49 @@
+== Description
+A ruby web shell that has autocompletion and readline behavior. It uses
+websockets, repl.js, readline.js and ripl for the shell engine.
+
+== Install
+Install the gem with:
+
+    sudo gem install nirvana
+
+== Usage
+
+Your browser must have html5 websockets support.
+
+To use, start a websocket server and open nirvana in a tab
+
+    # On a mac
+    $ nirvana
+
+    # Everywhere else
+    $ nirvana | command_to_browser_path
+
+If you close the tab, the path to nirvana's html page is (for reopening)
+
+    $ echo $(dirname $(gem which nirvana))/nirvana/public/index.html
+
+== Customize
+Since nirvana uses ripl under the hood, most shell behavior is customizable with ripl plugins which
+get loaded from ~/.riplrc. See {ripl}[http://github.com/cldwalker/ripl] for more.
+
+== Links
+* {ripl}[http://github.com/cldwalker/ripl]
+* {readline.js}[http://github.com/cldwalker/readline.js]
+* {repl.js}[http://github.com/cldwalker/repl.js]
+
+== Bugs/Issues
+Please report them {on github}[http://github.com/cldwalker/nirvana/issues]. For javascript issues,
+report them on {readline.js}[http://github.com/cldwalker/readline.js/issues] or
+{repl.js}[http://github.com/cldwalker/repl.js/issues] as appropriate.
+
+== Credits
+* {rkh's brirb}[http://github.com/rkh/brirb]: Original prototype which inspired this project
+
+== Todo
+* Tests
+* Load ~/.irb_history into readline.js
+* Customizable html and js
+* Use text area for multi-line input
+* See readline.js and repl.js todos for javascript todos
+* Possible plugins for sinatra and em-websocket-server

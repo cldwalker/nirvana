@@ -2,6 +2,7 @@ require 'ripl'
 require 'ripl/web'
 require 'nirvana/shell'
 require 'nirvana/util'
+require 'nirvana/version'
 
 module Nirvana
   def self.start_shell
