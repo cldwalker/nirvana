@@ -10,7 +10,7 @@ module Bs
             result = Bs.start_shell
             ws.send(result) unless result.to_s.empty?
           }
-          ws.onmessage {|msg| ws.send Ripl.shell.loop_once(msg) }
+          ws.onmessage {|msg| ws.send Ripl.shell.web_loop_once(msg) }
           ws.onclose { Ripl.shell.after_loop }
         end
       end
