@@ -18,6 +18,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'json_pure', '>= 1.4.3'
   s.add_dependency 'em-websocket', '>= 0.1.4'
   s.files = Dir.glob(%w[{lib,test}/**/*.rb bin/* [A-Z]*.{txt,rdoc} ext/**/*.{rb,c} **/deps.rip]) + %w{Rakefile .gemspec}
+  s.files += Dir.glob('lib/**/*.{css,html,js,gif}')
   s.extra_rdoc_files = ["README.rdoc", "LICENSE.txt"]
   s.license = 'MIT'
 end
