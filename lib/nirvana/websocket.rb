@@ -1,13 +1,13 @@
 require 'em-websocket'
-require 'bs'
+require 'nirvana'
 
-module Bs
+module Nirvana
   module Websocket
     def self.run
       EventMachine.run do
         EventMachine::WebSocket.start(:host => '127.0.0.1', :port => 8080) do |ws|
           ws.onopen {
-            result = Bs.start_shell
+            result = Nirvana.start_shell
             ws.send(result) unless result.to_s.empty?
           }
           ws.onmessage {|msg| ws.send Ripl.shell.web_loop_once(msg) }
@@ -17,7 +17,7 @@ module Bs
     rescue
       message = "Unable to start websocket since port 8080 is occupied"
       message = $!.message unless $!.message[/no acceptor/]
-      abort "bs websocket error: #{message}"
+      abort "nirvana websocket error: #{message}"
     end
   end
 end

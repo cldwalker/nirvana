@@ -1,7 +1,7 @@
 require 'stringio'
 require 'escape_utils'
 
-module Bs
+module Nirvana
   module Util
     extend self
 

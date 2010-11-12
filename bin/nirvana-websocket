@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+
+require 'nirvana/websocket'
+Nirvana::Websocket.run

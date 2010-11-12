@@ -1,7 +1,7 @@
 require 'yajl'
 require 'ripl/completion'
 
-module Bs
+module Nirvana
   module Shell
     def web_loop_once(input)
       super
@@ -27,13 +27,13 @@ module Bs
 
     def format_result(result)
       output = Util.format_output @stdout + super
-      output = "<div class='bs_warning'>#{@stderr}</div>" + output unless @stderr.to_s.empty?
+      output = "<div class='nirvana_warning'>#{@stderr}</div>" + output unless @stderr.to_s.empty?
       output
     end
 
     protected
     def html_error(error, message)
-      "<span class='bs_exception'>#{Util.format_output(message + format_error(error))}</span>"
+      "<span class='nirvana_exception'>#{Util.format_output(message + format_error(error))}</span>"
     end
 
     def get_completions(input)
@@ -52,4 +52,4 @@ module Bs
   end
 end
 
-Ripl::Shell.send :include, Bs::Shell
+Ripl::Shell.send :include, Nirvana::Shell

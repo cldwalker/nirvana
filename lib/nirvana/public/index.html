@@ -1,10 +1,10 @@
 <html>
   <head>
-    <title>bs</title>
+    <title>nirvana</title>
     <link href='css/jquery.repl.css' rel='stylesheet' type='text/css'>
-    <link href='css/bs.css' rel='stylesheet' type='text/css'>
+    <link href='css/nirvana.css' rel='stylesheet' type='text/css'>
     <script src='js/jquery.min.js' type='text/javascript'></script>
-    <script src='js/bs.js' type='text/javascript'></script>
+    <script src='js/nirvana.js' type='text/javascript'></script>
     <script src='js/jquery.hotkeys.js' type='text/javascript'></script>
     <script src="js/jquery.ui.autocomplete.min.js"></script>
     <script src='js/jquery.readline.js' type='text/javascript'></script>
@@ -14,10 +14,10 @@
           $('#input').readline({
             autocompleteCss: 'css/jquery.ui.autocomplete.css',
             readlineCss: 'css/jquery.readline.css',
-            startCompletion: $.ws.bsComplete
+            startCompletion: $.ws.nirvanaComplete
           }).repl({
             resultPrompt: '',
-            startMessage: function() { return '$ bs' },
+            startMessage: function() { return '$ nirvana' },
             spinner: 'images/spinner.gif',
             loop: function(val) {
               $.readline.addHistory(val);
