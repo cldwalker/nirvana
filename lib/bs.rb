@@ -5,7 +5,10 @@ require 'bs/util'
 
 module Bs
   def self.start_shell
-    stdout, stderr = Util.capture_all { Ripl.shell(:name=>'bs', :readline=>false).before_loop }
+    stdout, stderr = Util.capture_all {
+      Ripl::Runner.load_rc(Ripl.config[:riplrc])
+      Ripl.shell(:name=>'bs', :readline=>false).before_loop
+    }
     (result = stdout.to_s + stderr.to_s) ? Util.format_output(result) : result
   end
 
