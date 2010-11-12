@@ -1,4 +1,5 @@
 require 'ripl'
+require 'ripl/web'
 require 'bs/shell'
 require 'bs/util'
 

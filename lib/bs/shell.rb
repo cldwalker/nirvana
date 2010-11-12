@@ -4,19 +4,13 @@ require 'ripl/completion'
 module Bs
   module Shell
     def web_loop_once(input)
-      @input = input || ''
-      @history << @input
+      super
       @eval_error = nil
-      if @input[/^:AUTOCOMPLETE:/]
-        get_completions(@input)
-      else
-        loop_once
-      end
+      @input[/^:AUTOCOMPLETE:/] ? get_completions(@input) : loop_once
     rescue Exception => e
+      exit if e.message[/^uncaught throw `ripl_exit'/]
       html_error(e, "Internal #{@name} error: ")
     end
-
-    def get_input; @input; end
 
     def print_result(result)
       @eval_error || format_result(@result)
