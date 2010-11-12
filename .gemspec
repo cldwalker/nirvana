@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.email       = "gabriel.horner@gmail.com"
   s.homepage    = "http://github.com/cldwalker/nirvana"
   s.summary = "A ruby web shell that is very ape and very nice"
-  s.description =  "DESCRIPTION"
+  s.description =  "A ruby web shell that has autocompletion and readline behavior. It uses websockets, repl.js, readline.js and ripl for the shell engine."
   s.required_rubygems_version = ">= 1.3.6"
   s.rubyforge_project = 'tagaholic'
   s.executables  = ['nirvana', 'nirvana-websocket']
