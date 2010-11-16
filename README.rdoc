@@ -23,6 +23,25 @@ If you close the tab, the path to nirvana's html page is (for reopening)
 
     $ echo $(dirname $(gem which nirvana))/nirvana/public/index.html
 
+Once you're in the nirvana web shell, autocompletion should work better than irb's (argument
+autocompletion):
+
+    >> Bo[TAB]
+    >> Bond
+    >> Bond.const[TAB]
+       Bond.const_defined?
+       Bond.const_get
+       Bond.const_missing
+       Bond.const_set
+       Bond.constants
+    >> Bond.const_g[TAB]
+    >> Bond.const_get :Ag[TAB]
+    >> Bond.const_get :Agent
+
+Also notice that a subset of readline's functionality is available.  Try C-l, C-r or C-p and they
+should do what readline normally does. For more keybindings, see
+{readline.js}[http://github.com/cldwalker/readline.js].
+
 == Customize
 Since nirvana uses ripl under the hood, most shell behavior is customizable with ripl plugins which
 get loaded from ~/.riplrc. See {ripl}[http://github.com/cldwalker/ripl] for more.
@@ -40,8 +59,14 @@ report them on {readline.js}[http://github.com/cldwalker/readline.js/issues] or
 == Credits
 * {rkh's brirb}[http://github.com/rkh/brirb]: Original prototype which inspired this project
 
+== License
+nirvana is MIT licensed. nirvana comes bundled with other libraries which have the following
+licenses: jquery (GPL2 and MIT), jquery.hotkeys plugin (no license), repl.js jquery plugin (MIT) and
+readline.js jquery plugin (MIT).
+
 == Todo
 * Tests
+* Easier way to reopen an existing session
 * Load ~/.irb_history into readline.js
 * Customizable html and js
 * Use text area for multi-line input
