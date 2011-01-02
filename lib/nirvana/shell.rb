@@ -2,6 +2,7 @@ require 'json'
 require 'ripl/completion'
 
 module Nirvana
+  # Included into Ripl::Shell at runtime
   module Shell
     def web_loop_once(input)
       super
@@ -26,7 +27,10 @@ module Nirvana
     end
 
     def format_result(result)
-      output = Util.format_output @stdout + super
+      stdout, stderr, output = Util.capture_all { super }
+      @stdout << (stdout.empty? ? output : stdout)
+      @stderr << stderr
+      output = Util.format_output @stdout
       output = "<div class='nirvana_warning'>#{@stderr}</div>" + output unless @stderr.to_s.empty?
       output
     end
@@ -51,5 +55,3 @@ module Nirvana
     end
   end
 end
-
-Ripl::Shell.send :include, Nirvana::Shell
