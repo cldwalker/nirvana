@@ -23,6 +23,10 @@ If you close the tab, the path to nirvana's html page is (for reopening)
 
     $ echo $(dirname $(gem which nirvana))/nirvana/public/index.html
 
+To see what options nirvana takes (mostly options like ripl):
+
+    $ nirvana -h
+
 Once you're in the nirvana web shell, autocompletion should work better than irb's (argument
 autocompletion):
 

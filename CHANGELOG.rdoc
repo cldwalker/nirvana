@@ -1,2 +1,6 @@
+== 0.1.1
+* Add commandline options via a Runner
+* Fix to work with hirb
+
 == 0.1.0
 * Finally, a release
