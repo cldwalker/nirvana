@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = ">= 1.3.6"
   s.rubyforge_project = 'tagaholic'
   s.executables  = ['nirvana', 'nirvana-websocket']
-  s.add_dependency 'ripl', '>= 0.2.1'
+  s.add_dependency 'ripl', '>= 0.3.0'
   s.add_dependency 'escape_utils', '>= 0.1.8'
   s.add_dependency 'json_pure', '>= 1.4.3'
   s.add_dependency 'em-websocket', '>= 0.1.4'

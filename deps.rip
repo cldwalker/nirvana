@@ -1,4 +1,4 @@
-ripl >=0.2.1
+ripl >=0.3.0
 escape_utils >=0.1.8
 json_pure >=1.4.3
 em-websocket >=0.1.4
